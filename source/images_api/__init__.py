@@ -33,7 +33,7 @@ app.config["CACHE_DEFAULT_TIMEOUT"] = CONFIG.get("images_api.default_cache_times
 
 DB = MongoEngine(app)
 
-CACHE = Cache(app)
+REDIS = Cache(app)
 
 CELERY = Celery(app.name, broker=app.config["CELERY_BROKER_URL"])
 CELERY.conf.update(app.config)
