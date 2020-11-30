@@ -1,0 +1,16 @@
+defaults:
+  api:
+    log_lvl: info
+    fetch_photos_delta: 300
+    default_cache_time: 30
+    search_cache_time: 15
+    interview_api_key: 23567b218376f79d9415
+  redis:
+    host: redis
+    port: 6379
+  mongodb:
+    username: user
+    password: password
+    host: mongodb
+    port: 27017
+    db: admin

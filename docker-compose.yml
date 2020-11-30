@@ -1,0 +1,39 @@
+version: "3.5"
+
+x-base-api:
+  &base-api
+  build: .
+  restart: on-failure
+  depends_on:
+    - mongodb
+    - redis
+  volumes:
+    - ./source:/app
+    - ./configuration:/app/configuration
+
+services:
+  api:
+    <<: *base-api
+    ports:
+      - 127.0.0.1:8822:8080
+  api-celery-beat:
+    <<: *base-api
+    entrypoint: celery
+    command: -A images_api.CELERY beat -l INFO
+  api-celery-worker:
+    <<: *base-api
+    entrypoint: celery
+    command: -A images_api.CELERY worker -E -l INFO
+  mongodb:
+    image: mongo:4.4.1
+    restart: on-failure
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: password
+    ports:
+      - 127.0.0.1:12344:27017
+  redis:
+    image: redis:6.0.9-alpine
+    restart: on-failure
+    ports:
+      - 127.0.0.1:6378:6379
